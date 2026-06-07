@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tbaske0905 | フリーランスエンジニア</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg2: #1e293b;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --card: #1e293b;
+      --border: #334155;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(15,23,42,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--accent); letter-spacing: .05em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 80px 5% 60px;
+      background: radial-gradient(ellipse at 60% 40%, rgba(56,189,248,.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 70%, rgba(129,140,248,.07) 0%, transparent 50%);
+    }
+    .hero-badge {
+      display: inline-block; padding: .3rem 1rem;
+      border: 1px solid var(--accent); border-radius: 999px;
+      color: var(--accent); font-size: .8rem; margin-bottom: 1.5rem; letter-spacing: .1em;
+    }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 900; line-height: 1.2; margin-bottom: 1.2rem; }
+    .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem; }
+    .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn { padding: .8rem 2rem; border-radius: var(--radius); font-weight: 700; text-decoration: none; font-size: .95rem; transition: all .2s; display: inline-block; }
+    .btn-primary { background: var(--accent); color: #0f172a; }
+    .btn-primary:hover { opacity: .85; transform: translateY(-2px); }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 5%; }
+    .section-title { text-align: center; margin-bottom: 3.5rem; }
+    .section-title h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; margin-bottom: .5rem; }
+    .section-title p { color: var(--muted); }
+    .label { display: inline-block; font-size: .75rem; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; margin-bottom: .6rem; }
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; transition: border-color .2s, transform .2s; }
+    .card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg2); }
+    .service-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .service-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+    .service-card p { color: var(--muted); font-size: .9rem; }
+    .price-tag { margin-top: 1rem; font-size: .85rem; color: var(--accent); font-weight: 700; }
+
+    /* ── WORKS ── */
+    .work-img { height: 180px; background: linear-gradient(135deg, var(--bg2), var(--border)); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .85rem; overflow: hidden; }
+    .work-img img { width: 100%; height: 100%; object-fit: cover; }
+    .work-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+    .work-card p { color: var(--muted); font-size: .85rem; }
+    .tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .8rem; }
+    .tag { font-size: .75rem; padding: .2rem .6rem; background: rgba(56,189,248,.12); color: var(--accent); border-radius: 999px; }
+
+    /* ── STRENGTHS ── */
+    #strengths { background: var(--bg2); }
+    .strength-card { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .strength-num { font-size: 2rem; font-weight: 900; color: var(--accent); opacity: .4; line-height: 1; min-width: 2.5rem; }
+    .strength-card h3 { font-weight: 700; margin-bottom: .3rem; }
+    .strength-card p { color: var(--muted); font-size: .9rem; }
+
+    /* ── PRICING ── */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+    .price-card { text-align: center; }
+    .price-card.featured { border-color: var(--accent); background: rgba(56,189,248,.05); }
+    .price-name { font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .8rem; }
+    .price-amount { font-size: 2.5rem; font-weight: 900; color: var(--text); margin-bottom: .3rem; }
+    .price-amount span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .price-desc { color: var(--muted); font-size: .85rem; margin-bottom: 1.2rem; }
+    .price-list { list-style: none; text-align: left; margin-bottom: 1.5rem; }
+    .price-list li { font-size: .9rem; padding: .3rem 0; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .price-list li::before { content: '✓ '; color: var(--accent); }
+
+    /* ── CONTACT ── */
+    #contact { text-align: center; }
+    .contact-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 3rem 2rem; max-width: 560px; margin: 0 auto; }
+    .contact-box p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; color: var(--muted); font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Tbaske0905.dev</div>
+  <ul class="nav-links">
+    <li><a href="#services">サービス</a></li>
+    <li><a href="#works">実績</a></li>
+    <li><a href="#pricing">料金</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">Freelance Engineer</div>
+    <h1>業務を自動化して、<br><span>あなたの時間を取り戻す。</span></h1>
+    <p>Python・VBA・AI活用による業務自動化とWebサイト制作。最短翌日納品で、課題をスピード解決します。</p>
+    <div class="btn-group">
+      <a href="#contact" class="btn btn-primary">無料で相談する</a>
+      <a href="#works" class="btn btn-outline">実績を見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-title">
+    <div class="label">Services</div>
+    <h2>提供サービス</h2>
+    <p>Claude Codeを活用した高速実装で、どの案件も最短納品。</p>
+  </div>
+  <div class="grid3">
+    <div class="card service-card">
+      <div class="service-icon">⚡</div>
+      <h3>業務自動化（Python）</h3>
+      <p>繰り返し作業をスクリプト化。データ収集・整形・レポート生成など、手作業ゼロへ。</p>
+      <div class="price-tag">10,000円〜</div>
+    </div>
+    <div class="card service-card">
+      <div class="service-icon">📊</div>
+      <h3>Excel VBA・マクロ開発</h3>
+      <p>集計・転記・PDF出力などExcel業務を全自動化。コメント付きで引き渡すので修正も安心。</p>
+      <div class="price-tag">25,000円〜</div>
+    </div>
+    <div class="card service-card">
+      <div class="service-icon">🌐</div>
+      <h3>Webサイト・LP制作</h3>
+      <p>コーポレートサイト・ランディングページをSP完全対応で制作。WordPressにも対応。</p>
+      <div class="price-tag">30,000円〜</div>
+    </div>
+    <div class="card service-card">
+      <div class="service-icon">🔍</div>
+      <h3>Webスクレイピング</h3>
+      <p>競合価格・求人情報・商品データなどを自動収集。定期実行スケジューラー設定まで対応。</p>
+      <div class="price-tag">10,000円〜</div>
+    </div>
+    <div class="card service-card">
+      <div class="service-icon">🤖</div>
+      <h3>AI・ChatBot開発</h3>
+      <p>Claude・ChatGPT APIを活用したBot・自動応答ツール・社内FAQ自動化システムを構築。</p>
+      <div class="price-tag">50,000円〜</div>
+    </div>
+    <div class="card service-card">
+      <div class="service-icon">🔧</div>
+      <h3>既存システムの改修</h3>
+      <p>動かなくなったマクロの修正・機能追加・仕様変更。他社が断った案件も歓迎。</p>
+      <div class="price-tag">5,000円〜</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="section-title">
+    <div class="label">Works</div>
+    <h2>制作実績</h2>
+    <p>クラウドワークス・Lancersでの納品実績。</p>
+  </div>
+  <div class="grid3">
+    <div class="card work-card">
+      <div class="work-img">スクリーンショットを挿入</div>
+      <h3>不動産会社向け物件管理マクロ</h3>
+      <p>Excel VBAで物件データの自動集計・PDF納品書出力を実現。作業時間を1/5に削減。</p>
+      <div class="tags"><span class="tag">VBA</span><span class="tag">Excel</span><span class="tag">PDF</span></div>
+    </div>
+    <div class="card work-card">
+      <div class="work-img">スクリーンショットを挿入</div>
+      <h3>ECサイト価格モニタリングツール</h3>
+      <p>競合5サイトの価格を毎日自動収集しExcelに記録。価格変動をメールで通知。</p>
+      <div class="tags"><span class="tag">Python</span><span class="tag">スクレイピング</span><span class="tag">メール通知</span></div>
+    </div>
+    <div class="card work-card">
+      <div class="work-img">スクリーンショットを挿入</div>
+      <h3>サービス業向けランディングページ</h3>
+      <p>スマホ完全対応のLP。問い合わせフォーム・Google Analytics連携まで対応。</p>
+      <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">JS</span><span class="tag">レスポンシブ</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STRENGTHS -->
+<section id="strengths">
+  <div class="section-title">
+    <div class="label">Why Choose Me</div>
+    <h2>選ばれる3つの理由</h2>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <div class="strength-card">
+        <div class="strength-num">01</div>
+        <div>
+          <h3>最短翌日納品</h3>
+          <p>最新のAI開発ツールを活用した高速実装で、他のエンジニアの数倍速く納品。急ぎの案件も対応します。</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="strength-card">
+        <div class="strength-num">02</div>
+        <div>
+          <h3>丁寧な引き渡し</h3>
+          <p>コードには日本語コメントを付記。操作マニュアルも合わせて納品するので、非エンジニアの方でも安心して使えます。</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="strength-card">
+        <div class="strength-num">03</div>
+        <div>
+          <h3>納品後もサポート</h3>
+          <p>納品後の軽微な修正は原則無償対応。継続的なメンテナンス契約も承ります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-title">
+    <div class="label">Pricing</div>
+    <h2>料金プラン</h2>
+    <p>すべて税込・固定価格。追加費用は発生しません。</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="card price-card">
+      <div class="price-name">Light</div>
+      <div class="price-amount">10,000<span>円〜</span></div>
+      <div class="price-desc">1機能・小規模スクリプト</div>
+      <ul class="price-list">
+        <li>VBA / Python スクリプト 1機能</li>
+        <li>納期 1〜3日</li>
+        <li>コメント付きコード</li>
+        <li>1回の修正対応</li>
+      </ul>
+      <a href="#contact" class="btn btn-outline" style="width:100%;text-align:center;">相談する</a>
+    </div>
+    <div class="card price-card featured">
+      <div class="price-name">Standard ⭐</div>
+      <div class="price-amount">30,000<span>円〜</span></div>
+      <div class="price-desc">業務自動化・Webサイト制作</div>
+      <ul class="price-list">
+        <li>複数機能・ページ対応</li>
+        <li>納期 3〜7日</li>
+        <li>操作マニュアル付き</li>
+        <li>3回の修正対応</li>
+        <li>納品後1ヶ月サポート</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary" style="width:100%;text-align:center;">相談する</a>
+    </div>
+    <div class="card price-card">
+      <div class="price-name">Pro</div>
+      <div class="price-amount">100,000<span>円〜</span></div>
+      <div class="price-desc">システム開発・AI連携</div>
+      <ul class="price-list">
+        <li>大規模システム・API連携</li>
+        <li>納期 要相談</li>
+        <li>設計書・仕様書付き</li>
+        <li>無制限修正対応</li>
+        <li>3ヶ月保守サポート</li>
+      </ul>
+      <a href="#contact" class="btn btn-outline" style="width:100%;text-align:center;">相談する</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-title">
+    <div class="label">Contact</div>
+    <h2>お問い合わせ</h2>
+  </div>
+  <div class="contact-box">
+    <p>まずはお気軽にご相談ください。要件が固まっていなくてもOKです。24時間以内に返信します。</p>
+    <div class="contact-links">
+      <a href="https://crowdworks.jp/public/employees/YOUR_CW_ID" class="btn btn-primary" target="_blank">クラウドワークスで依頼</a>
+      <a href="https://www.lancers.jp/profile/Tbaske0905" class="btn btn-outline" target="_blank">Lancersで依頼</a>
+    </div>
+    <p style="margin-top:1.5rem;font-size:.85rem;color:var(--muted);">メール: tbaske0905@gmail.com</p>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Tbaske0905. All rights reserved.</p>
+</footer>
+
+<script>
+  // スクロール時にナビを強調
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.background =
+      window.scrollY > 50 ? 'rgba(15,23,42,.95)' : 'rgba(15,23,42,.85)';
+  });
+  // フェードイン
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.style.opacity = 1; });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.card').forEach(el => {
+    el.style.opacity = 0;
+    el.style.transition = 'opacity .6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

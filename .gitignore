@@ -1,0 +1,33 @@
+# 納品物（クライアントのデータを含むため除外）
+deliverables/
+!deliverables/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# 環境変数・シークレット
+.env
+.env.local
+secrets.json
+
+# 仮想環境
+.venv/
+venv/
+
+# スクレイピング・生成結果（gitに入れない）
+output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.vscode/
+.idea/
+*.swp
