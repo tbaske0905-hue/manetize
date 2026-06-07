@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'sites/portfolio/**'
+      - 'sites/**'
 
   workflow_dispatch:
 
@@ -29,10 +29,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload portfolio folder
+      - name: Upload sites folder
         uses: actions/upload-pages-artifact@v3
         with:
-          path: sites/portfolio
+          path: sites
 
       - name: Deploy to GitHub Pages
         id: deployment
