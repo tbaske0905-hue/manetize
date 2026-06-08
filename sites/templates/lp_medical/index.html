@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLINIC NAME | クリニック・医院・歯科</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:    #1b3a5c;
+      --navy2:   #2a5482;
+      --blue:    #4a8fc4;
+      --blue-l:  #e8f3fb;
+      --white:   #ffffff;
+      --off:     #f7f9fc;
+      --text:    #1a2533;
+      --muted:   #6b7f96;
+      --border:  #dde6f0;
+      --accent:  #3a7bd5;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Noto Sans JP',sans-serif; background:var(--white); color:var(--text); line-height:1.8; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 40px; transition:all .3s; }
+    nav.scrolled { background:rgba(255,255,255,.97); box-shadow:0 1px 0 var(--border); }
+    .nav-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:68px; }
+    .nav-logo { display:flex; flex-direction:column; }
+    .nav-logo-main { font-family:'Noto Serif JP',serif; font-size:17px; font-weight:400; letter-spacing:2px; color:var(--navy); }
+    .nav-logo-sub { font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
+    .nav-links { display:flex; gap:32px; align-items:center; }
+    .nav-links a { font-size:12px; letter-spacing:1px; color:var(--muted); transition:color .2s; }
+    .nav-links a:hover { color:var(--navy); }
+    .nav-tel { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400; color:var(--navy); letter-spacing:1px; }
+    .nav-tel-label { font-size:9px; color:var(--muted); letter-spacing:1px; text-align:right; }
+
+    /* HERO */
+    .hero { position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; background:var(--navy); }
+    .hero-bg-grad { position:absolute; inset:0; background:linear-gradient(120deg,#0d2540 0%,#1b3a5c 50%,#2a5482 100%); }
+    .hero-dots {
+      position:absolute; inset:0; opacity:.06;
+      background-image:radial-gradient(circle, #fff 1px, transparent 1px);
+      background-size:32px 32px;
+    }
+    .hero-line { position:absolute; top:0; bottom:0; left:55%; width:1px; background:linear-gradient(to bottom,transparent,rgba(255,255,255,.12),transparent); }
+    .hero-inner { max-width:1200px; margin:0 auto; padding:100px 40px 60px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; position:relative; }
+    .hero-text { color:#fff; }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+      padding:6px 16px; border-radius:999px;
+      font-size:11px; letter-spacing:2px; color:rgba(255,255,255,.8);
+      text-transform:uppercase; margin-bottom:28px;
+    }
+    .hero-badge::before { content:''; width:5px; height:5px; border-radius:50%; background:#4fc3f7; }
+    .hero h1 { font-family:'Noto Serif JP',serif; font-size:clamp(32px,4.5vw,54px); font-weight:300; line-height:1.45; letter-spacing:3px; margin-bottom:24px; }
+    .hero h1 strong { color:#7ec8e3; font-weight:400; }
+    .hero-desc { font-size:14px; color:rgba(255,255,255,.65); line-height:2.2; margin-bottom:40px; }
+    .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .btn-white { background:#fff; color:var(--navy); font-size:13px; font-weight:700; letter-spacing:1px; padding:14px 28px; border-radius:4px; transition:all .2s; }
+    .btn-white:hover { background:var(--blue-l); transform:translateY(-2px); }
+    .btn-outline { border:1px solid rgba(255,255,255,.4); color:#fff; font-size:13px; letter-spacing:1px; padding:14px 28px; border-radius:4px; transition:all .2s; }
+    .btn-outline:hover { border-color:#fff; background:rgba(255,255,255,.05); }
+    /* 診療カード */
+    .hero-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:32px; backdrop-filter:blur(8px); }
+    .hero-card-title { font-size:11px; letter-spacing:3px; color:rgba(255,255,255,.5); text-transform:uppercase; margin-bottom:20px; }
+    .info-row { display:flex; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.08); font-size:13px; }
+    .info-row:last-child { border-bottom:none; }
+    .info-row dt { color:rgba(255,255,255,.5); }
+    .info-row dd { color:#fff; text-align:right; }
+    .info-row dd .open { color:#4fc3f7; font-size:11px; }
+
+    /* FEATURES */
+    .features { padding:100px 40px; background:var(--off); }
+    .features-inner { max-width:1100px; margin:0 auto; }
+    .sec-head { text-align:center; margin-bottom:64px; }
+    .sec-en { font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:5px; color:var(--blue); text-transform:uppercase; display:block; margin-bottom:12px; }
+    .sec-ja { font-family:'Noto Serif JP',serif; font-size:clamp(22px,3vw,34px); font-weight:300; letter-spacing:3px; color:var(--navy); }
+    .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .feat { background:var(--white); padding:40px 32px; border-radius:8px; box-shadow:0 2px 20px rgba(27,58,92,.06); position:relative; overflow:hidden; transition:transform .3s, box-shadow .3s; }
+    .feat:hover { transform:translateY(-4px); box-shadow:0 8px 40px rgba(27,58,92,.12); }
+    .feat::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(to right,var(--navy),var(--blue)); transform:scaleX(0); transform-origin:left; transition:transform .4s; }
+    .feat:hover::before { transform:scaleX(1); }
+    .feat-num { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:300; color:var(--border); line-height:1; margin-bottom:16px; display:block; }
+    .feat h3 { font-family:'Noto Serif JP',serif; font-size:17px; font-weight:400; color:var(--navy); margin-bottom:12px; letter-spacing:1px; }
+    .feat p { font-size:13px; color:var(--muted); line-height:2; }
+
+    /* SERVICES */
+    .services { padding:100px 40px; background:var(--white); }
+    .services-inner { max-width:1100px; margin:0 auto; }
+    .services-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; margin-top:56px; }
+    .svc { padding:40px; border:1px solid var(--border); display:flex; align-items:center; gap:28px; transition:background .3s; }
+    .svc:hover { background:var(--blue-l); }
+    .svc-icon { font-size:32px; flex-shrink:0; width:56px; height:56px; display:flex; align-items:center; justify-content:center; background:var(--off); border-radius:8px; }
+    .svc h3 { font-family:'Noto Serif JP',serif; font-size:16px; font-weight:400; color:var(--navy); margin-bottom:6px; letter-spacing:1px; }
+    .svc p { font-size:12px; color:var(--muted); line-height:1.8; }
+
+    /* DOCTOR */
+    .doctor { padding:100px 40px; background:var(--navy); color:#fff; }
+    .doctor-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+    .doctor-photo { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:8px; aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.2); font-size:13px; letter-spacing:2px; }
+    .doctor-info .sec-en { color:#7ec8e3; }
+    .doctor-info h2 { font-family:'Noto Serif JP',serif; font-size:clamp(22px,3vw,34px); font-weight:300; letter-spacing:3px; margin-bottom:8px; }
+    .doctor-title { font-size:12px; color:rgba(255,255,255,.5); letter-spacing:2px; margin-bottom:28px; }
+    .doctor-info p { font-size:14px; color:rgba(255,255,255,.7); line-height:2.2; margin-bottom:24px; }
+    .doctor-career { border-top:1px solid rgba(255,255,255,.1); padding-top:24px; }
+    .career-item { font-size:13px; color:rgba(255,255,255,.55); padding:8px 0; border-bottom:1px solid rgba(255,255,255,.06); display:flex; gap:16px; }
+    .career-year { color:rgba(255,255,255,.3); flex-shrink:0; font-family:'Cormorant Garamond',serif; font-size:15px; }
+
+    /* FLOW */
+    .flow { padding:100px 40px; background:var(--off); }
+    .flow-inner { max-width:860px; margin:0 auto; }
+    .flow-steps { margin-top:56px; position:relative; }
+    .flow-steps::before { content:''; position:absolute; left:28px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--blue),transparent); }
+    .flow-step { display:flex; gap:32px; padding-bottom:40px; position:relative; }
+    .flow-step:last-child { padding-bottom:0; }
+    .flow-dot { width:56px; height:56px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; z-index:1; font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; }
+    .flow-content { padding-top:12px; }
+    .flow-content h3 { font-family:'Noto Serif JP',serif; font-size:17px; font-weight:400; color:var(--navy); margin-bottom:8px; }
+    .flow-content p { font-size:13px; color:var(--muted); line-height:2; }
+
+    /* ACCESS */
+    .access { padding:100px 40px; background:var(--white); }
+    .access-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; }
+    .access-info h2 { font-family:'Noto Serif JP',serif; font-size:clamp(22px,3vw,34px); font-weight:300; letter-spacing:3px; color:var(--navy); margin-bottom:32px; }
+    .access-row { display:grid; grid-template-columns:88px 1fr; padding:14px 0; border-bottom:1px solid var(--border); font-size:13px; gap:16px; }
+    .access-row dt { color:var(--muted); }
+    .access-row dd { color:var(--text); }
+    .time-grid { display:grid; grid-template-columns:1fr repeat(7,28px); gap:4px; font-size:11px; margin-top:16px; }
+    .time-head { color:var(--muted); display:flex; align-items:center; justify-content:center; }
+    .time-cell { display:flex; align-items:center; justify-content:center; height:28px; border-radius:4px; background:var(--blue-l); color:var(--navy); }
+    .time-cell.close { background:var(--off); color:var(--border); }
+    .map-ph { background:var(--off); border:1px solid var(--border); border-radius:8px; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:13px; }
+
+    /* CTA */
+    .cta { padding:100px 40px; background:linear-gradient(135deg,var(--navy),var(--navy2)); text-align:center; color:#fff; }
+    .cta-inner { max-width:680px; margin:0 auto; }
+    .cta h2 { font-family:'Noto Serif JP',serif; font-size:clamp(24px,4vw,42px); font-weight:300; letter-spacing:3px; margin-bottom:20px; }
+    .cta p { font-size:14px; color:rgba(255,255,255,.65); line-height:2.2; margin-bottom:40px; }
+    .cta-tel { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:300; letter-spacing:2px; color:#7ec8e3; display:block; margin-bottom:6px; }
+    .cta-tel-note { font-size:11px; color:rgba(255,255,255,.4); letter-spacing:2px; margin-bottom:36px; display:block; }
+    .cta-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+    footer { background:var(--text); padding:28px 40px; }
+    .footer-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+    .footer-logo { font-family:'Noto Serif JP',serif; font-size:15px; letter-spacing:3px; color:rgba(255,255,255,.5); }
+    footer small { font-size:11px; color:rgba(255,255,255,.25); letter-spacing:1px; }
+
+    @media(max-width:991px) {
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-card { display:none; }
+      .features-grid { grid-template-columns:1fr 1fr; }
+      .services-grid { grid-template-columns:1fr; }
+      .doctor-inner, .access-inner { grid-template-columns:1fr; gap:48px; }
+    }
+    @media(max-width:768px) {
+      nav { padding:0 20px; }
+      .nav-links a:not(.btn-white) { display:none; }
+      .features, .services, .doctor, .flow, .access, .cta { padding:64px 20px; }
+      .features-grid { grid-template-columns:1fr; }
+      .footer-inner { flex-direction:column; gap:12px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="nav-logo-main">Clinic Name</span>
+      <span class="nav-logo-sub">Internal Medicine</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">当院の特徴</a>
+      <a href="#services">診療内容</a>
+      <a href="#flow">受診の流れ</a>
+      <a href="#access">アクセス</a>
+    </div>
+    <div>
+      <div class="nav-tel">000-0000-0000</div>
+      <div class="nav-tel-label">受付 9:00〜18:00</div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grad"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-line"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">地域のかかりつけ医として</div>
+      <h1>お一人おひとりに<br>寄り添う医療を、<br><strong>丁寧に。</strong></h1>
+      <p class="hero-desc">
+        気になる症状から、定期的な健康管理まで。<br>
+        「何かあったときに相談できる」<br>
+        そんな存在でありたいと思っています。
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn-white">Web予約（24時間受付）</a>
+        <a href="#access" class="btn-outline">アクセスを見る</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">診療時間</div>
+      <dl>
+        <div class="info-row"><dt>月・火・木・金</dt><dd>9:00〜12:30 / 15:00〜18:30</dd></div>
+        <div class="info-row"><dt>水・土</dt><dd>9:00〜12:30</dd></div>
+        <div class="info-row"><dt>日・祝</dt><dd><span class="open">休診</span></dd></div>
+        <div class="info-row"><dt>Web予約</dt><dd>24時間受付中</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="sec-head">
+      <span class="sec-en reveal">Features</span>
+      <h2 class="sec-ja reveal">当院の3つの特徴</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feat reveal">
+        <span class="feat-num">01</span>
+        <h3>土曜日も診療</h3>
+        <p>平日お仕事の方でも通いやすいよう、土曜日の午前も診療しています。事前のWeb予約で待ち時間を短縮できます。</p>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-num">02</span>
+        <h3>丁寧な説明と相談</h3>
+        <p>検査結果や治療方針は、患者様にわかりやすい言葉でご説明します。疑問点は何でもご遠慮なくお聞きください。</p>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-num">03</span>
+        <h3>専門医への紹介</h3>
+        <p>必要に応じて、信頼できる専門医療機関へご紹介します。連携体制を整え、継続的なサポートを行います。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="sec-head">
+      <span class="sec-en reveal">Services</span>
+      <h2 class="sec-ja reveal">診療内容</h2>
+    </div>
+    <div class="services-grid">
+      <div class="svc reveal"><div class="svc-icon">🫀</div><div><h3>内科・循環器</h3><p>風邪・発熱・高血圧・糖尿病・生活習慣病など。定期的な健康管理もご相談ください。</p></div></div>
+      <div class="svc reveal"><div class="svc-icon">🩺</div><div><h3>健康診断・人間ドック</h3><p>企業健診・特定健診・各種自費健診に対応しています。結果についてのご相談も承ります。</p></div></div>
+      <div class="svc reveal"><div class="svc-icon">💉</div><div><h3>予防接種</h3><p>インフルエンザ・肺炎球菌・帯状疱疹など各種ワクチン接種を行っています。</p></div></div>
+      <div class="svc reveal"><div class="svc-icon">📋</div><div><h3>在宅医療・往診</h3><p>通院が困難な方へ、ご自宅への訪問診療を行っています。まずはご相談ください。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTOR -->
+<section class="doctor">
+  <div class="doctor-inner">
+    <div class="doctor-photo reveal">Photo Area</div>
+    <div class="doctor-info">
+      <span class="sec-en reveal">Doctor</span>
+      <h2 class="reveal">院長ご挨拶</h2>
+      <p class="doctor-title reveal">医学博士 / 内科専門医</p>
+      <p class="reveal">「病気を診るのではなく、人を診る」という信念のもと、患者様一人ひとりのライフスタイルや背景を大切にした医療を心がけています。</p>
+      <p class="reveal">些細なことでも、気になることがあればいつでもご相談ください。地域の皆様の健康を、長く見守っていきたいと思っています。</p>
+      <div class="doctor-career reveal">
+        <div class="career-item"><span class="career-year">2005</span><span>○○大学医学部 卒業</span></div>
+        <div class="career-item"><span class="career-year">2010</span><span>○○大学病院 内科 勤務</span></div>
+        <div class="career-item"><span class="career-year">2018</span><span>当院 開院</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="flow" id="flow">
+  <div class="flow-inner">
+    <div class="sec-head">
+      <span class="sec-en reveal">Flow</span>
+      <h2 class="sec-ja reveal">受診の流れ</h2>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step reveal">
+        <div class="flow-dot">01</div>
+        <div class="flow-content"><h3>Web予約・お電話</h3><p>24時間対応のWeb予約、またはお電話にてご予約ください。初診の方もお気軽にどうぞ。</p></div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-dot">02</div>
+        <div class="flow-content"><h3>受付・問診票記入</h3><p>ご来院後、受付にてお名前をお伝えください。問診票にご記入いただきます。保険証をお持ちください。</p></div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-dot">03</div>
+        <div class="flow-content"><h3>診察</h3><p>医師が丁寧に診察・検査を行います。気になることは何でもお気軽にご相談ください。</p></div>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-dot">04</div>
+        <div class="flow-content"><h3>会計・お薬</h3><p>処方箋をお渡しします。院外処方のため、近隣の調剤薬局にてお薬をお受け取りください。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="access" id="access">
+  <div class="access-inner">
+    <div class="access-info">
+      <span class="sec-en reveal">Access</span>
+      <h2 class="reveal">アクセス・診療時間</h2>
+      <dl>
+        <div class="access-row reveal"><dt>クリニック名</dt><dd>Clinic Name 内科クリニック</dd></div>
+        <div class="access-row reveal"><dt>住所</dt><dd>〒000-0000<br>○○県○○市○○1-2-3</dd></div>
+        <div class="access-row reveal"><dt>電話</dt><dd>000-0000-0000</dd></div>
+        <div class="access-row reveal"><dt>アクセス</dt><dd>○○線「○○駅」徒歩5分</dd></div>
+        <div class="access-row reveal"><dt>駐車場</dt><dd>10台完備（無料）</dd></div>
+      </dl>
+    </div>
+    <div class="map-ph reveal">Map Area</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="cta-inner">
+    <span class="sec-en" style="color:#7ec8e3">Reserve</span>
+    <h2 class="reveal">はじめての方も<br>お気軽にどうぞ</h2>
+    <p class="reveal">Web予約は24時間受け付けています。<br>お電話でのご相談もお気軽にどうぞ。</p>
+    <span class="cta-tel reveal">000-0000-0000</span>
+    <span class="cta-tel-note reveal">受付時間 9:00〜18:30（水・土は12:30まで）</span>
+    <div class="cta-actions reveal">
+      <a href="#" class="btn-white">Web予約（24時間）</a>
+      <a href="#" class="btn-outline">LINE相談</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Clinic Name 内科クリニック</div>
+    <small>© 2024 Clinic Name. All Rights Reserved.</small>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -3,271 +3,510 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SALON_NAME | サービス名</title>
+  <title>SALON NAME | サロン・スパ・クリニック</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* ===== テーマ変数 ===== */
     :root {
-      --primary: #9f7454;
-      --primary-light: #f5ede4;
-      --accent: #c9a882;
-      --text: #2d2d2d;
-      --muted: #7a7a7a;
-      --bg: #fefcfa;
-      --bg2: #faf6f1;
-      --border: #e8ddd4;
-      --radius: 16px;
+      --gold:    #b5924c;
+      --gold2:   #d4af72;
+      --dark:    #1a1209;
+      --brown:   #3d2b1f;
+      --cream:   #faf6f0;
+      --cream2:  #f3ede3;
+      --text:    #2c1f14;
+      --muted:   #7a6555;
+      --border:  #e0d5c5;
+      --radius:  2px;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: var(--bg); line-height: 1.8; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Noto Sans JP', sans-serif;
+      background:var(--cream);
+      color:var(--text);
+      line-height:1.85;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    a { color:inherit; text-decoration:none; }
 
-    /* NAV */
+    /* ===== SCROLL ANIMATION ===== */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ===== NAV ===== */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(254,252,250,.95); backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 6%; display: flex; align-items: center; justify-content: space-between; height: 72px;
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      padding:0 40px; transition:background .4s, box-shadow .4s;
     }
-    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--primary); letter-spacing: .08em; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: .85rem; letter-spacing: .05em; }
-    .nav-links a:hover { color: var(--primary); }
-    .nav-cta { background: var(--primary); color: white; padding: .55rem 1.4rem; border-radius: 999px; text-decoration: none; font-size: .85rem; font-weight: 700; transition: opacity .2s; }
-    .nav-cta:hover { opacity: .85; }
+    nav.scrolled {
+      background:rgba(250,246,240,.95);
+      backdrop-filter:blur(12px);
+      box-shadow:0 1px 0 var(--border);
+    }
+    .nav-inner {
+      max-width:1200px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      height:72px;
+    }
+    .nav-logo {
+      font-family:'Cormorant Garamond', serif;
+      font-size:20px; font-weight:300; letter-spacing:4px; text-transform:uppercase;
+    }
+    .nav-links { display:flex; gap:36px; align-items:center; }
+    .nav-links a { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); transition:color .2s; }
+    .nav-links a:hover { color:var(--gold); }
+    .nav-reserve {
+      background:var(--gold); color:#fff;
+      font-size:11px; letter-spacing:2px; text-transform:uppercase;
+      padding:10px 22px; border-radius:var(--radius); transition:background .2s;
+    }
+    .nav-reserve:hover { background:var(--brown); }
 
-    /* HERO */
-    .hero { position: relative; height: 90vh; min-height: 560px; display: flex; align-items: center; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #c9a882 0%, #9f7454 100%); }
-    .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
-    .hero-content { position: relative; z-index: 1; color: white; padding: 0 6%; max-width: 680px; }
-    .hero-sub { font-size: .85rem; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1.2rem; opacity: .8; }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 600; line-height: 1.3; margin-bottom: 1.2rem; }
-    .hero p { opacity: .9; margin-bottom: 2.5rem; font-size: 1.05rem; }
-    .btn { display: inline-block; padding: .9rem 2.2rem; border-radius: 999px; font-weight: 700; text-decoration: none; transition: all .2s; font-size: .9rem; letter-spacing: .05em; }
-    .btn-primary { background: white; color: var(--primary); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-    .btn-outline { border: 1px solid rgba(255,255,255,.6); color: white; margin-left: 1rem; }
+    /* ===== HERO ===== */
+    .hero {
+      position:relative; min-height:100vh;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:linear-gradient(135deg, #1a1209 0%, #2e1d0e 40%, #3d2b1f 100%);
+    }
+    .hero-pattern {
+      position:absolute; inset:0; opacity:.04;
+      background-image:repeating-linear-gradient(45deg,var(--gold2) 0,var(--gold2) 1px,transparent 0,transparent 50%);
+      background-size:20px 20px;
+    }
+    .hero-circle { position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(181,146,76,.15),transparent 70%); }
+    .hero-circle-1 { width:600px; height:600px; top:-100px; right:-100px; }
+    .hero-circle-2 { width:400px; height:400px; bottom:-50px; left:-50px; }
+    .hero-content { position:relative; text-align:center; color:#fff; padding:40px 24px; }
+    .hero-eyebrow {
+      font-family:'Cormorant Garamond', serif;
+      font-size:13px; letter-spacing:6px; text-transform:uppercase;
+      color:var(--gold2); margin-bottom:32px; display:block;
+    }
+    .hero h1 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(38px,6vw,72px);
+      font-weight:300; line-height:1.3; letter-spacing:4px; margin-bottom:28px;
+    }
+    .hero h1 span { color:var(--gold2); font-style:italic; }
+    .hero-desc { font-size:15px; color:rgba(255,255,255,.7); line-height:2.2; max-width:500px; margin:0 auto 44px; }
+    .hero-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+    .btn-gold {
+      background:var(--gold); color:#fff;
+      font-size:12px; letter-spacing:3px; text-transform:uppercase;
+      padding:15px 36px; border-radius:var(--radius); transition:all .25s;
+    }
+    .btn-gold:hover { background:var(--gold2); transform:translateY(-2px); box-shadow:0 8px 24px rgba(181,146,76,.3); }
+    .btn-outline-w {
+      border:1px solid rgba(255,255,255,.4); color:#fff;
+      font-size:12px; letter-spacing:3px; text-transform:uppercase;
+      padding:15px 36px; border-radius:var(--radius); transition:all .25s;
+    }
+    .btn-outline-w:hover { border-color:var(--gold2); color:var(--gold2); }
+    .hero-scroll {
+      position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+    }
+    .hero-scroll span { font-size:10px; letter-spacing:3px; color:rgba(255,255,255,.4); text-transform:uppercase; }
+    .scroll-line {
+      width:1px; height:40px;
+      background:linear-gradient(to bottom, rgba(255,255,255,.4), transparent);
+      animation:scrollDown 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollDown {
+      0%{transform:scaleY(0);transform-origin:top}
+      50%{transform:scaleY(1);transform-origin:top}
+      51%{transform:scaleY(1);transform-origin:bottom}
+      100%{transform:scaleY(0);transform-origin:bottom}
+    }
 
-    /* SECTIONS */
-    section { padding: 100px 6%; }
-    .section-header { text-align: center; margin-bottom: 3.5rem; }
-    .label { font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: .6rem; }
-    .section-header h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 600; margin-bottom: .6rem; }
-    .section-header p { color: var(--muted); max-width: 480px; margin: 0 auto; font-size: .95rem; }
-    .divider { width: 40px; height: 2px; background: var(--accent); margin: 1rem auto; }
+    /* ===== SECTION 共通 ===== */
+    section { padding:120px 40px; }
+    .section-label {
+      font-family:'Cormorant Garamond', serif;
+      font-size:11px; letter-spacing:5px; text-transform:uppercase;
+      color:var(--gold); margin-bottom:24px; display:block;
+    }
+    .section-divider { width:48px; height:1px; background:var(--gold); margin:28px auto 0; }
 
-    /* CONCEPT */
-    #concept { background: var(--bg2); }
-    .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-    .concept-img { background: var(--primary-light); border-radius: var(--radius); height: 420px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .9rem; }
-    .concept-text h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; line-height: 1.4; margin-bottom: 1.2rem; }
-    .concept-text p { color: var(--muted); font-size: .95rem; margin-bottom: 1rem; }
+    /* ===== CONCEPT ===== */
+    .concept { background:var(--cream); text-align:center; }
+    .concept-inner { max-width:860px; margin:0 auto; }
+    .concept h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(26px,3.5vw,42px);
+      font-weight:300; line-height:1.7; letter-spacing:3px; color:var(--dark); margin-bottom:32px;
+    }
+    .concept p { font-size:15px; color:var(--muted); line-height:2.4; max-width:640px; margin:32px auto 0; }
 
-    /* MENU */
-    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
-    .menu-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: transform .2s, box-shadow .2s; }
-    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(159,116,84,.12); }
-    .menu-img { height: 200px; background: linear-gradient(135deg, var(--primary-light), var(--border)); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .85rem; }
-    .menu-body { padding: 1.5rem; }
-    .menu-body h3 { font-weight: 700; margin-bottom: .3rem; }
-    .menu-body p { color: var(--muted); font-size: .85rem; margin-bottom: .8rem; }
-    .menu-price { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    /* ===== FEATURES ===== */
+    .features { background:var(--cream2); }
+    .features-inner { max-width:1100px; margin:0 auto; }
+    .features-header { text-align:center; margin-bottom:72px; }
+    .features-header h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(24px,3vw,36px); font-weight:300; letter-spacing:3px; color:var(--dark);
+    }
+    .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .feature-card {
+      background:var(--cream); padding:52px 36px; text-align:center; position:relative;
+    }
+    .feature-card::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:0; height:2px; background:var(--gold); transition:width .4s ease;
+    }
+    .feature-card:hover::before { width:100%; }
+    .feature-num {
+      font-family:'Cormorant Garamond', serif;
+      font-size:52px; font-weight:300; color:var(--border); line-height:1;
+      margin-bottom:16px; display:block;
+    }
+    .feature-card h3 {
+      font-family:'Noto Serif JP', serif;
+      font-size:17px; font-weight:400; letter-spacing:2px; color:var(--dark); margin-bottom:14px;
+    }
+    .feature-card p { font-size:13px; color:var(--muted); line-height:2.1; }
 
-    /* STAFF */
-    #staff { background: var(--bg2); }
-    .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
-    .staff-card { text-align: center; }
-    .staff-photo { width: 140px; height: 140px; background: var(--primary-light); border-radius: 50%; margin: 0 auto 1.2rem; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .85rem; }
-    .staff-card h3 { font-weight: 700; margin-bottom: .2rem; }
-    .staff-card .role { font-size: .8rem; color: var(--accent); letter-spacing: .1em; margin-bottom: .6rem; }
-    .staff-card p { color: var(--muted); font-size: .85rem; }
+    /* ===== MENU ===== */
+    .menu { background:var(--dark); color:#fff; }
+    .menu-inner { max-width:1100px; margin:0 auto; }
+    .menu-header { text-align:center; margin-bottom:80px; }
+    .menu-header .section-label { color:var(--gold2); }
+    .menu-header h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(24px,3vw,36px); font-weight:300; letter-spacing:3px;
+    }
+    .menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+    .menu-item {
+      padding:40px 48px; border:1px solid rgba(255,255,255,.06);
+      display:flex; justify-content:space-between; align-items:center;
+      transition:background .3s;
+    }
+    .menu-item:hover { background:rgba(181,146,76,.08); }
+    .menu-name h4 {
+      font-family:'Noto Serif JP', serif;
+      font-size:16px; font-weight:400; letter-spacing:2px; margin-bottom:6px;
+    }
+    .menu-name p { font-size:12px; color:rgba(255,255,255,.4); }
+    .menu-price { font-family:'Cormorant Garamond', serif; font-size:28px; font-weight:300; color:var(--gold2); }
+    .menu-price span { font-size:13px; color:rgba(255,255,255,.3); }
 
-    /* ACCESS */
-    .access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .map-placeholder { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); height: 300px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .9rem; }
-    .access-info h3 { font-weight: 700; margin-bottom: 1.2rem; }
-    .access-info table { width: 100%; border-collapse: collapse; font-size: .9rem; }
-    .access-info td { padding: .7rem 0; border-bottom: 1px solid var(--border); vertical-align: top; }
-    .access-info td:first-child { color: var(--muted); width: 80px; }
+    /* ===== FLOW ===== */
+    .flow { background:var(--cream); }
+    .flow-inner { max-width:860px; margin:0 auto; }
+    .flow-header { text-align:center; margin-bottom:72px; }
+    .flow-header h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(24px,3vw,36px); font-weight:300; letter-spacing:3px; color:var(--dark);
+    }
+    .flow-step {
+      display:grid; grid-template-columns:80px 1fr; gap:0 32px;
+      padding:36px 0; border-bottom:1px solid var(--border); align-items:start;
+    }
+    .flow-step:first-child { border-top:1px solid var(--border); }
+    .step-num {
+      font-family:'Cormorant Garamond', serif;
+      font-size:42px; font-weight:300; color:var(--gold); line-height:1; display:block; text-align:center;
+    }
+    .step-sublabel { font-size:9px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; display:block; text-align:center; margin-top:4px; }
+    .step-content h3 {
+      font-family:'Noto Serif JP', serif;
+      font-size:17px; font-weight:400; letter-spacing:1px; color:var(--dark); margin-bottom:8px; margin-top:6px;
+    }
+    .step-content p { font-size:13px; color:var(--muted); line-height:2; }
 
-    /* CTA */
-    .cta-section { background: var(--primary); color: white; text-align: center; padding: 100px 6%; }
-    .cta-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
-    .cta-section p { opacity: .85; margin-bottom: 2.5rem; font-size: 1.05rem; }
+    /* ===== VOICE ===== */
+    .voice { background:var(--cream2); }
+    .voice-inner { max-width:1100px; margin:0 auto; }
+    .voice-header { text-align:center; margin-bottom:64px; }
+    .voice-header h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(24px,3vw,36px); font-weight:300; letter-spacing:3px; color:var(--dark);
+    }
+    .voice-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .voice-card { background:var(--cream); padding:36px 28px; border-bottom:2px solid var(--gold); }
+    .voice-stars { color:var(--gold); font-size:14px; margin-bottom:14px; letter-spacing:3px; }
+    .voice-text { font-size:13px; color:var(--text); line-height:2.2; margin-bottom:20px; }
+    .voice-name { font-size:12px; color:var(--muted); letter-spacing:1px; }
 
-    footer { background: var(--text); color: rgba(255,255,255,.5); padding: 2.5rem 6%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: .8rem; }
-    footer a { color: rgba(255,255,255,.5); text-decoration: none; }
+    /* ===== ACCESS ===== */
+    .access { background:var(--dark); color:#fff; }
+    .access-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+    .access-info .section-label { color:var(--gold2); }
+    .access-info h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(22px,3vw,34px); font-weight:300; letter-spacing:3px; margin-bottom:36px;
+    }
+    .access-row {
+      display:grid; grid-template-columns:100px 1fr;
+      padding:16px 0; border-bottom:1px solid rgba(255,255,255,.08); font-size:13px;
+    }
+    .access-row dt { color:var(--gold2); letter-spacing:1px; }
+    .access-row dd { color:rgba(255,255,255,.7); }
+    .map-placeholder {
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+      aspect-ratio:4/3; display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,.2); font-size:13px; letter-spacing:2px;
+    }
 
-    @media (max-width: 768px) {
-      .concept-grid, .access-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
+    /* ===== CTA ===== */
+    .cta {
+      background:linear-gradient(135deg, #1a1209, #3d2b1f);
+      text-align:center; color:#fff;
+    }
+    .cta-inner { max-width:640px; margin:0 auto; }
+    .cta .section-label { color:var(--gold2); }
+    .cta h2 {
+      font-family:'Noto Serif JP', serif;
+      font-size:clamp(26px,4vw,44px); font-weight:300; letter-spacing:4px; line-height:1.7; margin-bottom:20px;
+    }
+    .cta-divider { width:40px; height:1px; background:var(--gold); margin:0 auto 28px; }
+    .cta p { font-size:14px; color:rgba(255,255,255,.6); line-height:2.2; margin-bottom:48px; }
+    .cta-tel {
+      font-family:'Cormorant Garamond', serif;
+      font-size:42px; font-weight:300; color:var(--gold2); letter-spacing:3px; display:block; margin-bottom:8px;
+    }
+    .cta-tel-note { font-size:11px; color:rgba(255,255,255,.4); letter-spacing:2px; margin-bottom:40px; display:block; }
+    .cta-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background:var(--dark); color:rgba(255,255,255,.3);
+      border-top:1px solid rgba(255,255,255,.06); padding:32px 40px;
+    }
+    .footer-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+    .footer-logo { font-family:'Cormorant Garamond', serif; font-size:16px; letter-spacing:4px; color:rgba(255,255,255,.5); }
+    footer small { font-size:11px; letter-spacing:1px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:991px) {
+      .features-grid { grid-template-columns:1fr 1fr; }
+      .menu-grid { grid-template-columns:1fr; }
+      .voice-grid { grid-template-columns:1fr 1fr; }
+      .access-inner { grid-template-columns:1fr; gap:48px; }
+    }
+    @media(max-width:768px) {
+      nav { padding:0 20px; }
+      .nav-links a:not(.nav-reserve) { display:none; }
+      section { padding:72px 20px; }
+      .features-grid, .voice-grid { grid-template-columns:1fr; }
+      .menu-item { padding:24px 20px; flex-direction:column; align-items:flex-start; gap:8px; }
+      .footer-inner { flex-direction:column; gap:12px; text-align:center; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo">Salon Name</div>
-  <ul class="nav-links">
-    <li><a href="#concept">コンセプト</a></li>
-    <li><a href="#menu">メニュー</a></li>
-    <li><a href="#staff">スタッフ</a></li>
-    <li><a href="#access">アクセス</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">予約する</a>
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">Salon Name</div>
+    <div class="nav-links">
+      <a href="#concept">コンセプト</a>
+      <a href="#menu">メニュー</a>
+      <a href="#flow">ご来店の流れ</a>
+      <a href="#access">アクセス</a>
+      <a href="#cta" class="nav-reserve">ご予約</a>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
+<section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-circle hero-circle-1"></div>
+  <div class="hero-circle hero-circle-2"></div>
   <div class="hero-content">
-    <div class="hero-sub">Beauty Salon / Clinic / Spa</div>
-    <h1>あなたらしい美しさを、<br>ここから。</h1>
-    <p>一人ひとりの個性を大切に、最上の技術とおもてなしでお迎えします。</p>
-    <a href="#contact" class="btn btn-primary">ご予約はこちら</a>
-    <a href="#menu" class="btn btn-outline">メニューを見る</a>
+    <span class="hero-eyebrow">Beauty &amp; Wellness Salon</span>
+    <h1>あなただけの<br><span>特別な時間</span>を。</h1>
+    <p class="hero-desc">日常の喧騒から離れ、<br>心と体がほぐれていく感覚を体験してください。</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-gold">ご予約はこちら</a>
+      <a href="#menu" class="btn-outline-w">メニューを見る</a>
+    </div>
   </div>
-</div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
 <!-- CONCEPT -->
-<section id="concept">
-  <div class="concept-grid">
-    <div class="concept-img">コンセプト画像をここに</div>
-    <div class="concept-text">
-      <div class="label">Concept</div>
-      <div class="divider" style="margin:0 0 1.2rem"></div>
-      <h2>あなたのための<br>特別な時間</h2>
-      <p>コンセプトやブランドストーリーをここに記載します。どんな想いでサロンを開いたのか、どんな価値を提供したいのかを伝えます。</p>
-      <p>2〜3段落程度が読みやすい長さです。感情に訴えかける言葉を選ぶと効果的です。</p>
+<section class="concept" id="concept">
+  <div class="concept-inner">
+    <span class="section-label reveal">Concept</span>
+    <h2 class="reveal">本物の癒しは、<br>細部のこだわりから生まれる。</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">私たちは、施術のクオリティだけでなく、空間・香り・音・温度——<br>あらゆる感覚を大切に設計しています。<br><br>ご来店いただく時間が、心の底からのリフレッシュになるよう、<br>一つひとつの施術に誠実に向き合っています。</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <span class="section-label reveal">Why Choose Us</span>
+      <h2 class="reveal">選ばれる3つの理由</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <span class="feature-num">01</span>
+        <h3>厳選された技術と素材</h3>
+        <p>確かな技術を持つセラピストと、肌に優しい厳選素材だけを使用。安心してお任せいただける環境をご提供します。</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-num">02</span>
+        <h3>完全個室のプライベート空間</h3>
+        <p>他のお客様を気にせず過ごせる完全個室。ゆったりとした時間の中で、思い切りリラックスしていただけます。</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-num">03</span>
+        <h3>お一人おひとりに合わせた施術</h3>
+        <p>初回カウンセリングで、お悩みやご要望を丁寧にお伺いします。あなただけの施術プランを提案します。</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- MENU -->
-<section id="menu">
-  <div class="section-header">
-    <div class="label">Menu</div>
-    <div class="divider"></div>
-    <h2>メニュー</h2>
-    <p>すべてのメニューは完全予約制です。</p>
-  </div>
-  <div class="menu-grid">
-    <div class="menu-card">
-      <div class="menu-img">メニュー画像</div>
-      <div class="menu-body">
-        <h3>メニュー名 A</h3>
-        <p>メニューの説明文。効果・所要時間・おすすめの方などを記載します。</p>
-        <div class="menu-price">¥10,000〜</div>
-      </div>
+<section class="menu" id="menu">
+  <div class="menu-inner">
+    <div class="menu-header">
+      <span class="section-label reveal">Menu</span>
+      <h2 class="reveal">メニュー</h2>
     </div>
-    <div class="menu-card">
-      <div class="menu-img">メニュー画像</div>
-      <div class="menu-body">
-        <h3>メニュー名 B</h3>
-        <p>メニューの説明文。効果・所要時間・おすすめの方などを記載します。</p>
-        <div class="menu-price">¥15,000〜</div>
+    <div class="menu-grid">
+      <div class="menu-item reveal">
+        <div class="menu-name"><h4>フルボディトリートメント</h4><p>90 min / Full Body</p></div>
+        <div class="menu-price">¥18,000<span>〜</span></div>
       </div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-img">メニュー画像</div>
-      <div class="menu-body">
-        <h3>メニュー名 C</h3>
-        <p>メニューの説明文。効果・所要時間・おすすめの方などを記載します。</p>
-        <div class="menu-price">¥20,000〜</div>
+      <div class="menu-item reveal">
+        <div class="menu-name"><h4>フェイシャルケア</h4><p>60 min / Facial</p></div>
+        <div class="menu-price">¥12,000<span>〜</span></div>
+      </div>
+      <div class="menu-item reveal">
+        <div class="menu-name"><h4>ヘッドスパ</h4><p>45 min / Head Spa</p></div>
+        <div class="menu-price">¥8,000<span>〜</span></div>
+      </div>
+      <div class="menu-item reveal">
+        <div class="menu-name"><h4>プレミアムコース</h4><p>120 min / Premium</p></div>
+        <div class="menu-price">¥28,000<span>〜</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STAFF -->
-<section id="staff">
-  <div class="section-header">
-    <div class="label">Staff</div>
-    <div class="divider"></div>
-    <h2>スタッフ紹介</h2>
+<!-- FLOW -->
+<section class="flow" id="flow">
+  <div class="flow-inner">
+    <div class="flow-header">
+      <span class="section-label reveal">Flow</span>
+      <h2 class="reveal">ご来店の流れ</h2>
+    </div>
+    <div class="flow-step reveal">
+      <div><span class="step-num">01</span><span class="step-sublabel">Reserve</span></div>
+      <div class="step-content"><h3>ご予約</h3><p>お電話またはWebフォームよりご予約ください。ご希望の日時・メニューをお知らせいただければ、スムーズにご案内できます。</p></div>
+    </div>
+    <div class="flow-step reveal">
+      <div><span class="step-num">02</span><span class="step-sublabel">Consult</span></div>
+      <div class="step-content"><h3>カウンセリング</h3><p>ご来店後、体調やお悩みを丁寧にお伺いします。初めての方も安心してお話しください。</p></div>
+    </div>
+    <div class="flow-step reveal">
+      <div><span class="step-num">03</span><span class="step-sublabel">Treatment</span></div>
+      <div class="step-content"><h3>施術</h3><p>完全個室でゆったりとお過ごしいただきながら、丁寧な施術をお受けください。</p></div>
+    </div>
+    <div class="flow-step reveal">
+      <div><span class="step-num">04</span><span class="step-sublabel">Relax</span></div>
+      <div class="step-content"><h3>アフタータイム</h3><p>施術後はハーブティーをお楽しみいただきながら、ゆっくりとお過ごしください。</p></div>
+    </div>
   </div>
-  <div class="staff-grid">
-    <div class="staff-card">
-      <div class="staff-photo">顔写真</div>
-      <h3>スタッフ名</h3>
-      <div class="role">代表 / オーナー</div>
-      <p>経歴・得意分野・メッセージなどを簡潔に。信頼感と親しみやすさが伝わる文章で。</p>
+</section>
+
+<!-- VOICE -->
+<section class="voice" id="voice">
+  <div class="voice-inner">
+    <div class="voice-header">
+      <span class="section-label reveal">Voice</span>
+      <h2 class="reveal">お客様の声</h2>
     </div>
-    <div class="staff-card">
-      <div class="staff-photo">顔写真</div>
-      <h3>スタッフ名</h3>
-      <div class="role">スタイリスト</div>
-      <p>経歴・得意分野・メッセージなどを簡潔に。信頼感と親しみやすさが伝わる文章で。</p>
-    </div>
-    <div class="staff-card">
-      <div class="staff-photo">顔写真</div>
-      <h3>スタッフ名</h3>
-      <div class="role">アシスタント</div>
-      <p>経歴・得意分野・メッセージなどを簡潔に。信頼感と親しみやすさが伝わる文章で。</p>
+    <div class="voice-grid">
+      <div class="voice-card reveal">
+        <div class="voice-stars">★★★★★</div>
+        <p class="voice-text">「施術後、体がこんなに軽くなるとは思いませんでした。スタッフの方の丁寧な対応も嬉しく、また必ず来ます。」</p>
+        <span class="voice-name">30代 女性</span>
+      </div>
+      <div class="voice-card reveal">
+        <div class="voice-stars">★★★★★</div>
+        <p class="voice-text">「空間の雰囲気が素晴らしく、入った瞬間から日常を忘れられました。完全個室なので周りを気にしなくて良いのも◎」</p>
+        <span class="voice-name">40代 女性</span>
+      </div>
+      <div class="voice-card reveal">
+        <div class="voice-stars">★★★★★</div>
+        <p class="voice-text">「肩こりが長年の悩みでしたが、数回通ううちに明らかに改善されてきました。技術の高さを実感しています。」</p>
+        <span class="voice-name">50代 女性</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ACCESS -->
-<section id="access">
-  <div class="section-header">
-    <div class="label">Access</div>
-    <div class="divider"></div>
-    <h2>アクセス</h2>
-  </div>
-  <div class="access-grid">
-    <div class="map-placeholder">Google Mapを埋め込む</div>
+<section class="access" id="access">
+  <div class="access-inner">
     <div class="access-info">
-      <h3>SALON_NAME</h3>
-      <table>
-        <tr><td>住所</td><td>〒000-0000<br>都道府県市区町村番地</td></tr>
-        <tr><td>電話</td><td>000-0000-0000</td></tr>
-        <tr><td>営業時間</td><td>10:00〜19:00（最終受付18:00）</td></tr>
-        <tr><td>定休日</td><td>毎週月曜日・第2火曜日</td></tr>
-        <tr><td>アクセス</td><td>〇〇駅から徒歩5分</td></tr>
-        <tr><td>駐車場</td><td>あり（2台）</td></tr>
-      </table>
+      <span class="section-label reveal">Access</span>
+      <h2 class="reveal">アクセス</h2>
+      <dl>
+        <div class="access-row reveal"><dt>サロン名</dt><dd>Salon Name</dd></div>
+        <div class="access-row reveal"><dt>住所</dt><dd>〒000-0000 東京都○○区○○1-2-3</dd></div>
+        <div class="access-row reveal"><dt>電話</dt><dd>000-0000-0000</dd></div>
+        <div class="access-row reveal"><dt>営業時間</dt><dd>10:00〜20:00（最終受付 19:00）</dd></div>
+        <div class="access-row reveal"><dt>定休日</dt><dd>毎週月曜日・第3火曜日</dd></div>
+      </dl>
     </div>
+    <div class="map-placeholder reveal">Map Area</div>
   </div>
 </section>
 
 <!-- CTA -->
-<div class="cta-section">
-  <div class="label" style="color:rgba(255,255,255,.6)">Reservation</div>
-  <div class="divider" style="background:rgba(255,255,255,.4)"></div>
-  <h2>ご予約・お問い合わせ</h2>
-  <p>初めての方も大歓迎です。お気軽にご連絡ください。</p>
-  <a href="tel:000-0000-0000" class="btn btn-primary">📞 電話で予約する</a>
-</div>
-
-<section id="contact" style="background:var(--bg2)">
-  <div class="section-header">
-    <div class="label">Online Reservation</div>
-    <div class="divider"></div>
-    <h2>オンライン予約</h2>
+<section class="cta" id="cta">
+  <div class="cta-inner">
+    <span class="section-label">Reserve</span>
+    <h2 class="reveal">はじめての方も<br>お気軽にどうぞ</h2>
+    <div class="cta-divider reveal"></div>
+    <p class="reveal">ご予約・ご質問はお電話またはWebフォームから。<br>スタッフ一同、心よりお待ちしております。</p>
+    <span class="cta-tel reveal">000-0000-0000</span>
+    <span class="cta-tel-note reveal">受付時間 10:00〜19:00（月曜定休）</span>
+    <div class="cta-actions reveal">
+      <a href="#" class="btn-gold">Webで予約する</a>
+      <a href="#" class="btn-outline-w">LINEで相談する</a>
+    </div>
   </div>
-  <form style="max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:1rem;">
-    <input type="text" placeholder="お名前" style="padding:.8rem 1rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;">
-    <input type="tel" placeholder="電話番号" style="padding:.8rem 1rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;">
-    <input type="email" placeholder="メールアドレス" style="padding:.8rem 1rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;">
-    <select style="padding:.8rem 1rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;color:var(--muted);">
-      <option>ご希望のメニュー</option>
-      <option>メニュー A</option>
-      <option>メニュー B</option>
-      <option>メニュー C</option>
-    </select>
-    <textarea placeholder="ご希望の日時・ご要望など" style="padding:.8rem 1rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;height:100px;resize:vertical;"></textarea>
-    <button type="submit" style="background:var(--primary);color:white;padding:1rem;border:none;border-radius:999px;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.05em;">予約リクエストを送る</button>
-  </form>
 </section>
 
 <footer>
-  <div>&copy; 2026 SALON_NAME. All rights reserved.</div>
-  <div><a href="#">プライバシーポリシー</a></div>
+  <div class="footer-inner">
+    <div class="footer-logo">Salon Name</div>
+    <small>© 2024 Salon Name. All Rights Reserved.</small>
+  </div>
 </footer>
 
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), (Array.from(e.target.parentNode.children).indexOf(e.target) % 4) * 100);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
